@@ -1,0 +1,56 @@
+services:
+  consul:
+    image: hashicorp/consul:latest
+    restart: unless-stopped
+    ports:
+      - "8504:8500"
+    command: [agent, -server, '-bind={{GetInterfaceIP "eth0"}}', -client=0.0.0.0, -bootstrap-expect=1, -ui]
+    volumes:
+      - ${CONTAINER_DATA:-.docker/data}/consul:/consul/data
+
+  postgres:
+    image: postgres:14
+    restart: unless-stopped
+    ports:
+      - "5456:5432/tcp"
+    environment:
+      - POSTGRES_USER=talks
+      - POSTGRES_PASSWORD=talks
+    volumes:
+      - ${CONTAINER_DATA:-.docker/data}/postgres:/var/lib/postgresql/data/ 
+      
+  silo_1:
+    image: talks-silo
+    build:
+      context: .
+      dockerfile: ./Talks/Dockerfile
+    ports:
+      - "18080:8080/tcp"
+      - "17080:7080/tcp"
+
+  silo_2:
+    image: talks-silo
+    build:
+      context: .
+      dockerfile: ./Talks/Dockerfile
+    ports:
+      - "28080:8080/tcp"
+      - "27080:7080/tcp"
+
+  silo_3:
+    image: talks-silo
+    build:
+      context: .
+      dockerfile: ./Talks/Dockerfile
+    ports:
+      - "38080:8080/tcp"
+      - "37080:7080/tcp"
+      
+  silo_4:
+    image: talks-silo
+    build:
+      context: .
+      dockerfile: ./Talks/Dockerfile
+    ports:
+      - "48080:8080/tcp"
+      - "47080:7080/tcp"

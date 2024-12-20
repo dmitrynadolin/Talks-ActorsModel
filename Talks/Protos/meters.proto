@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option csharp_namespace = "Talks";
+
+package metering;
+
+// The greeting service definition.
+service DirectMeters {
+  // Sends a greeting
+  rpc AddMeasurement (AddMeasurementRequest) returns (AddMeasurementReply);
+  rpc GetBalance (GetBalanceRequest) returns (GetBalanceReply);
+  rpc GetSummary(GetSummaryRequest) returns (GetSummaryReply);
+}
+
+service OrleansMeters {
+	rpc AddMeasurement (AddMeasurementRequest) returns (AddMeasurementReply);
+	rpc GetBalance (GetBalanceRequest) returns (GetBalanceReply);
+	rpc GetSummary(GetSummaryRequest) returns (GetSummaryReply);
+}
+
+message AddMeasurementRequest {
+  int64 meterId = 1;
+  double value = 2;
+}
+
+message AddMeasurementReply {
+  double delta = 1;
+}
+
+message GetBalanceRequest {
+  int64 meterId = 1;
+}
+
+message GetBalanceReply {
+	double balance1M = 3;
+	double balanceTotal = 4;
+}
+
+message GetSummaryRequest {
+}
+
+message GetSummaryReply {
+  double balance1M = 3;
+  double balanceTotal = 4;
+}
